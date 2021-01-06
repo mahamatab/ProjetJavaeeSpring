@@ -8,6 +8,7 @@ import org.sid.entities.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,14 +32,18 @@ public class ContactRestServlet {
 			return contactRepository.findById(id);
 		}
 		
+	
+
+		
 		@RequestMapping(value="/chercheContacts", method=RequestMethod.GET)
 		public Page<Contact> chercher(
 				@RequestParam(name="mc",defaultValue="") String mc,
 				@RequestParam(name="page",defaultValue="0") int page,
-				@RequestParam(name="size",defaultValue="") int size) {
+				@RequestParam(name="size",defaultValue="5") int size){
+			return contactRepository.chercher("%"+mc+"%", PageRequest.of(page,size)); 
 			
-			return null;//contactRepository.chercher(mc, new PageRequest(page,size, null))
 		}
+			
 		
 		@RequestMapping(value="/contacts/{id}",method=RequestMethod.PUT)
 			public Contact save(@PathVariable Long id,@RequestBody Contact c) {
